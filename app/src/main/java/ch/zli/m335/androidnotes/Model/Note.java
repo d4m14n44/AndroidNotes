@@ -1,5 +1,7 @@
 package ch.zli.m335.androidnotes.Model;
 
+import android.app.Application;
+
 public class Note {
 
     private String title;
@@ -9,6 +11,10 @@ public class Note {
         super();
         this.title = title;
         this.text = text;
+    }
+
+    public Note() {
+
     }
 
     public String getTitle() {

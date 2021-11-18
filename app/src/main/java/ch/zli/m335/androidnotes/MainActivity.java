@@ -14,20 +14,15 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import ch.zli.m335.androidnotes.Activities.CreateNoteActivity;
 import ch.zli.m335.androidnotes.Activities.EditNoteActivity;
 import ch.zli.m335.androidnotes.Model.Note;
-import ch.zli.m335.androidnotes.Services.ServiceNote;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -42,8 +37,40 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private ConstraintLayout constrainLayout;
     private LinearLayout linear;
     private Button noteButtons;
-    ServiceNote serviceNote;
     boolean bound = false;
+    public ServiceNote serviceNote;
+
+
+    /**
+     *
+     *
+     *
+     *
+     * SERVICE FÜR NOTES EVTL BEGRABEN UND DURCH PERSISTENZ (PROTOTYP COUNTER)
+     * ERSETZEN (EVTL IN EXTERNEM FILE (im Projekt) ABSPEICHERN)
+     *
+     * SERVICE FÜR DIE WECHSLUNG DER HINTERGRUNDFARBEN MACHEN
+     *
+     * https://stackoverflow.com/questions/1944656/android-global-variable (wie ich auf Service zugreien kann)
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+
+     */
+
+
+
+
+
+
+
+
 
 
     @Override
@@ -112,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            System.out.println("TESTTESTTESTTEST");
             ServiceNote.LocalBinder binder = (ServiceNote.LocalBinder) service;
             serviceNote = binder.getService();
             bound = true;
@@ -157,6 +185,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onResume()
     {
+        /*
+            Hier muss der foreach kommen für alle buttons
+         */
         super.onResume();
         if (isSensorAvailable) {
             this.sensorManager.registerListener(this, tmpSensor, SensorManager.SENSOR_DELAY_NORMAL);
@@ -175,4 +206,5 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
 }

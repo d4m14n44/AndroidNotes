@@ -50,6 +50,9 @@ public class CreateNoteActivity extends AppCompatActivity {
     private OnClickListener addNewNote = new OnClickListener() {
         @Override
         public void onClick(View v) {
+            String noteTitle = title.getText().toString();
+            String noteText = noteContent.getText().toString();
+           // MainActivity.serviceNote.addNoteInArrayList(noteTitle, noteText);
             Intent intent = new Intent(CreateNoteActivity.this, MainActivity.class);
             startActivity(intent);
         }

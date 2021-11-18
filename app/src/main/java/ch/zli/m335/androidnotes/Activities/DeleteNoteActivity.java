@@ -1,2 +1,6 @@
-package ch.zli.m335.androidnotes.Activities;public class DeleteNoteActivity {
+package ch.zli.m335.androidnotes.Activities;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class DeleteNoteActivity extends AppCompatActivity {
 }

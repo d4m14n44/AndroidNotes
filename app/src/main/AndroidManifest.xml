@@ -18,6 +18,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Activities.CreateNoteActivity"
+
+            />
+        <activity android:name=".Activities.EditNoteActivity"
+
+            />
+        <activity android:name=".Activities.DeleteNoteActivity"
+
+            />
     </application>
 
 </manifest>

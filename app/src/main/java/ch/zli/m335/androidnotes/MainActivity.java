@@ -3,14 +3,17 @@ package ch.zli.m335.androidnotes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,6 +27,7 @@ import java.util.ArrayList;
 import ch.zli.m335.androidnotes.Activities.CreateNoteActivity;
 import ch.zli.m335.androidnotes.Activities.EditNoteActivity;
 import ch.zli.m335.androidnotes.Model.Note;
+import ch.zli.m335.androidnotes.Services.ServiceNote;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -38,7 +42,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private ConstraintLayout constrainLayout;
     private LinearLayout linear;
     private Button noteButtons;
-    private static ArrayList<Note> allNotes = new ArrayList<>();
+    ServiceNote serviceNote;
+    boolean bound = false;
 
 
     @Override
@@ -46,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        int[] array = new int[]{1,2,3,4};
+        int[] array = new int[]{1,2,3,4, 5};
 
         this.add = (Button) findViewById(R.id.addButton);
         this.scrollUp = (Button) findViewById(R.id.upButton);
@@ -81,17 +86,43 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     300
             );
             // Abstand zwischen den Buttons
-            l.setMargins(0, 0, 0, 70);
+            l.setMargins(0, 0, 0, 100);
             noteButtons.setLayoutParams(l);
 
             linear.addView(noteButtons);
             this.noteButtons.setOnClickListener(openNote);
         }
-
-
-
-
     }
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+        Intent intent = new Intent(this, ServiceNote.class);
+        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unbindService(connection);
+        bound = false;
+    }
+
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            ServiceNote.LocalBinder binder = (ServiceNote.LocalBinder) service;
+            serviceNote = binder.getService();
+            bound = true;
+        }
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            bound = false;
+        }
+    };
+
+
 
     private OnClickListener openNote = new OnClickListener() {
         @Override

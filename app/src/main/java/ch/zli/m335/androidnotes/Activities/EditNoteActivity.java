@@ -58,7 +58,8 @@ public class EditNoteActivity extends AppCompatActivity {
     private OnClickListener deleteNote = new OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            Intent intent = new Intent(EditNoteActivity.this, DeleteNoteActivity.class);
+            startActivity(intent);
         }
     };
 

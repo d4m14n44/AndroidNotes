@@ -22,10 +22,13 @@ public class DeleteNoteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_note_activity);
+        setContentView(R.layout.delete_note_activity);
 
         this.yes = (Button) findViewById(R.id.yesButton);
         this.no = (Button) findViewById(R.id.noButton);
+
+        this.yes.setOnClickListener(deleteNote);
+        this.no.setOnClickListener(cancelDelete);
 
 
     }

@@ -1,4 +1,4 @@
-package ch.zli.m335.androidnotes;
+package ch.zli.m335.androidnotes.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -22,20 +22,12 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import ch.zli.m335.androidnotes.Activities.CreateNoteActivity;
-import ch.zli.m335.androidnotes.Activities.EditNoteActivity;
 import ch.zli.m335.androidnotes.Model.AppData;
 import ch.zli.m335.androidnotes.Model.Note;
+import ch.zli.m335.androidnotes.R;
+import ch.zli.m335.androidnotes.Services.ServiceNote;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -58,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private String noteText;
     ArrayList<String> array = new ArrayList<>();
     ArrayList<String> array2 = new ArrayList<>();
+    ArrayList<Note> notes = new ArrayList<>();
+    int id = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +70,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         this.array2.add("Inhalt von Notiz 4");
         this.array2.add("Inhalt von Notiz 5");
 
+//        Note note1 = new Note("Notiz 1", "Inhalt von Notiz 1");
+//        Note note2 = new Note("Notiz 2", "Inhalt von Notiz 2");
+//        Note note3 = new Note("Notiz 3", "Inhalt von Notiz 3");
+//        Note note4 = new Note("Notiz 4", "Inhalt von Notiz 4");
 
-        preferences = getSharedPreferences("NoteTitle", 0);
-        buttonTitle = preferences.getString("NoteTitles", "Notiz 1");
 
-        preferences = getSharedPreferences("Content", 0);
-        noteText = preferences.getString("Contents", "Inhalt von Notiz 1");
+        notes = AppData.getInstance().getList();
+//        notes.add(note1);
+//        notes.add(note2);
+//        notes.add(note3);
+//        notes.add(note4);
+
 
 
         this.add = (Button) findViewById(R.id.addButton);
@@ -105,8 +105,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             this.isSensorAvailable = false;
         }
 
-        for (String i : array) {
-            buttonTitle = i;
+        for (Note n : notes) {
+//            preferences = getSharedPreferences("NoteTitle", 0);
+//            buttonTitle = preferences.getString("NoteTitles", array.get(id));
+//
+//            preferences = getSharedPreferences("Content", 0);
+//            noteText = preferences.getString("Contents", array2.get(id));
+            buttonTitle = n.getTitle();
             this.noteButtons = new Button(this);
             this.noteButtons.setText(buttonTitle + "");
             this.noteButtons.setPadding(150, 0, 150, 0);
@@ -126,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
             linear.addView(noteButtons);
             this.noteButtons.setOnClickListener(openNote);
+            id++;
         }
     }
 
@@ -176,11 +182,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private OnClickListener openNote = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            saveNotes();
+            //saveNotes();
             System.out.println(noteButtons.getText());
             Intent intent = new Intent(MainActivity.this, EditNoteActivity.class);
-            intent.putExtra("NoteTitles", array.get(0));
-            intent.putExtra("Contents", array2.get(1));
+            intent.putExtra("NoteTitles", array.get(id - 1));
+            intent.putExtra("Contents", array2.get(id - 1));
             startActivity(intent);
         }
     };
@@ -188,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private OnClickListener openAddActivity = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            saveNotes();
+            //saveNotes();
             Intent intent = new Intent(MainActivity.this, CreateNoteActivity.class);
             startActivity(intent);
         }
@@ -209,9 +215,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     protected void onResume() {
-        /*
-            Hier muss der foreach kommen für alle buttons
-         */
+
         super.onResume();
         if (isSensorAvailable) {
             this.sensorManager.registerListener(this, tmpSensor, SensorManager.SENSOR_DELAY_NORMAL);
@@ -231,11 +235,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
-    void saveNotes()
-    {
-        SharedPreferences.Editor edit = preferences.edit();
-        edit.apply();
-    }
+//    void saveNotes()
+//    {
+//        SharedPreferences.Editor edit = preferences.edit();
+//        edit.apply();
+//    }
 
     public ArrayList<String> getArray() {
         return array;

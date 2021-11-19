@@ -1,6 +1,5 @@
-package ch.zli.m335.androidnotes;
+package ch.zli.m335.androidnotes.Services;
 
-import android.app.Application;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;

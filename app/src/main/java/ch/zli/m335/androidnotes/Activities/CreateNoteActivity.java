@@ -9,7 +9,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import androidx.appcompat.app.AppCompatActivity;
 
-import ch.zli.m335.androidnotes.MainActivity;
+import ch.zli.m335.androidnotes.Model.AppData;
+import ch.zli.m335.androidnotes.Model.Note;
 import ch.zli.m335.androidnotes.R;
 
 public class CreateNoteActivity extends AppCompatActivity {
@@ -52,7 +53,8 @@ public class CreateNoteActivity extends AppCompatActivity {
         public void onClick(View v) {
             String noteTitle = title.getText().toString();
             String noteText = noteContent.getText().toString();
-           // MainActivity.serviceNote.addNoteInArrayList(noteTitle, noteText);
+            Note no = new Note(noteTitle, noteText);
+            AppData.getInstance().getList().add(no);
             Intent intent = new Intent(CreateNoteActivity.this, MainActivity.class);
             startActivity(intent);
         }

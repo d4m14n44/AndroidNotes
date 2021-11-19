@@ -10,7 +10,6 @@ import android.widget.MultiAutoCompleteTextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import ch.zli.m335.androidnotes.MainActivity;
 import ch.zli.m335.androidnotes.R;
 
 public class EditNoteActivity extends AppCompatActivity {

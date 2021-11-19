@@ -1,17 +1,13 @@
 package ch.zli.m335.androidnotes.Activities;
 
-import android.app.AlarmManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.MultiAutoCompleteTextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import ch.zli.m335.androidnotes.MainActivity;
 import ch.zli.m335.androidnotes.R;
 
 public class DeleteNoteActivity extends AppCompatActivity {

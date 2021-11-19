@@ -32,6 +32,12 @@ public class EditNoteActivity extends AppCompatActivity {
         this.editTitle = (EditText) findViewById(R.id.EditNoteTitle);
         this.editText = (MultiAutoCompleteTextView) findViewById(R.id.editNoteText);
 
+        Bundle extras = getIntent().getExtras();
+        String t = "";
+        if (extras != null) {
+            t = extras.getString("NoteTitles");
+        }
+        this.editTitle.setText(t);
         this.save.setOnClickListener(saveNote);
         this.cancel.setOnClickListener(cancelEdit);
         this.delete.setOnClickListener(deleteNote);

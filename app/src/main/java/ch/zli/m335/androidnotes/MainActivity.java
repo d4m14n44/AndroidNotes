@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -21,8 +22,19 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import ch.zli.m335.androidnotes.Activities.CreateNoteActivity;
 import ch.zli.m335.androidnotes.Activities.EditNoteActivity;
+import ch.zli.m335.androidnotes.Model.AppData;
 import ch.zli.m335.androidnotes.Model.Note;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
@@ -41,38 +53,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     boolean bound = false;
     public ServiceNote serviceNote;
     private ScrollView scrollView;
+    SharedPreferences preferences;
+    private String buttonTitle;
+    ArrayList<String> array = new ArrayList<>();
 
 
     /**
-     *
-     *
-     *
-     *
      * SERVICE FÜR NOTES EVTL BEGRABEN UND DURCH PERSISTENZ (PROTOTYP COUNTER)
      * ERSETZEN (EVTL IN EXTERNEM FILE (im Projekt) ABSPEICHERN)
-     *
+     * <p>
      * SERVICE FÜR DIE WECHSLUNG DER HINTERGRUNDFARBEN MACHEN
-     *
+     * <p>
      * https://stackoverflow.com/questions/1944656/android-global-variable (wie ich auf Service zugreien kann)
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-
      */
-
-
-
-
-
-
-
-
 
 
     @Override
@@ -80,7 +73,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        int[] array = new int[]{1,2,3,4, 5};
+        this.array.add("Notiz 1");
+        this.array.add("Notiz 2");
+        this.array.add("Notiz 3");
+        this.array.add("Notiz 4");
+        this.array.add("Notiz 5");
+
+        preferences = getSharedPreferences("NoteTitle", 0);
+        buttonTitle = preferences.getString("NoteTitles", "Notiz 1");
 
         this.add = (Button) findViewById(R.id.addButton);
         this.scrollUp = (Button) findViewById(R.id.upButton);
@@ -99,13 +99,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (this.sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE) != null) {
             this.tmpSensor = this.sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
             this.isSensorAvailable = true;
-        }else {
+        } else {
             this.isSensorAvailable = false;
         }
 
-        for (int i : array) {
+        for (String i : array) {
+            buttonTitle = i;
             this.noteButtons = new Button(this);
-            this.noteButtons.setText(i + "");
+            this.noteButtons.setText(buttonTitle + "");
             this.noteButtons.setPadding(150, 0, 150, 0);
             this.noteButtons.setMaxLines(100);
             // Farben setzen
@@ -144,11 +145,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            System.out.println("TESTTESTTESTTEST");
             ServiceNote.LocalBinder binder = (ServiceNote.LocalBinder) service;
             serviceNote = binder.getService();
             bound = true;
         }
+
         @Override
         public void onServiceDisconnected(ComponentName name) {
             bound = false;
@@ -173,7 +174,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private OnClickListener openNote = new OnClickListener() {
         @Override
         public void onClick(View v) {
+            saveNotes();
             Intent intent = new Intent(MainActivity.this, EditNoteActivity.class);
+            intent.putExtra("NoteTitles", array.get(0));
             startActivity(intent);
         }
     };
@@ -181,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private OnClickListener openAddActivity = new OnClickListener() {
         @Override
         public void onClick(View v) {
+            saveNotes();
             Intent intent = new Intent(MainActivity.this, CreateNoteActivity.class);
             startActivity(intent);
         }
@@ -190,8 +194,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent event) {
         double tmp = event.values[0];
         this.test.setText(tmp + "");
-        if (tmp < 0.0)
-        {
+        if (tmp < 0.0) {
             this.constrainLayout.setBackgroundColor(Color.BLUE);
         } else if (tmp > 0.0 && tmp < 25.0) {
             this.constrainLayout.setBackgroundColor(Color.GRAY);
@@ -201,8 +204,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         /*
             Hier muss der foreach kommen für alle buttons
          */
@@ -225,4 +227,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
+    void saveNotes()
+    {
+        SharedPreferences.Editor edit = preferences.edit();
+        edit.putString("notes", array.get(0));
+        edit.apply();
+    }
+
+    public ArrayList<String> getArray() {
+        return array;
+    }
 }

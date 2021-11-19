@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import ch.zli.m335.androidnotes.Activities.CreateNoteActivity;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Button noteButtons;
     boolean bound = false;
     public ServiceNote serviceNote;
+    private ScrollView scrollView;
 
 
     /**
@@ -87,9 +89,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         this.constrainLayout = (ConstraintLayout) findViewById(R.id.constrainLayout);
         this.test = (TextView) findViewById(R.id.test);
         this.linear = (LinearLayout) findViewById(R.id.linearLayout);
+        this.scrollView = (ScrollView) findViewById(R.id.scrollview);
 
         this.sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         this.add.setOnClickListener(openAddActivity);
+        this.scrollUp.setOnClickListener(scrollingUp);
+        this.scrollDown.setOnClickListener(scrollingDown);
 
         if (this.sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE) != null) {
             this.tmpSensor = this.sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
@@ -150,6 +155,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     };
 
+    private OnClickListener scrollingUp = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            scrollView.fullScroll(ScrollView.FOCUS_UP);
+        }
+    };
+
+    private OnClickListener scrollingDown = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+        }
+    };
 
 
     private OnClickListener openNote = new OnClickListener() {

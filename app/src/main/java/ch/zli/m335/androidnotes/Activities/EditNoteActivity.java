@@ -34,10 +34,13 @@ public class EditNoteActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         String t = "";
+        String u = "";
         if (extras != null) {
             t = extras.getString("NoteTitles");
+            u = extras.getString("Contents");
         }
         this.editTitle.setText(t);
+        this.editText.setText(u);
         this.save.setOnClickListener(saveNote);
         this.cancel.setOnClickListener(cancelEdit);
         this.delete.setOnClickListener(deleteNote);

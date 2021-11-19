@@ -55,18 +55,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private ScrollView scrollView;
     SharedPreferences preferences;
     private String buttonTitle;
+    private String noteText;
     ArrayList<String> array = new ArrayList<>();
-
-
-    /**
-     * SERVICE FÜR NOTES EVTL BEGRABEN UND DURCH PERSISTENZ (PROTOTYP COUNTER)
-     * ERSETZEN (EVTL IN EXTERNEM FILE (im Projekt) ABSPEICHERN)
-     * <p>
-     * SERVICE FÜR DIE WECHSLUNG DER HINTERGRUNDFARBEN MACHEN
-     * <p>
-     * https://stackoverflow.com/questions/1944656/android-global-variable (wie ich auf Service zugreien kann)
-     */
-
+    ArrayList<String> array2 = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +70,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         this.array.add("Notiz 4");
         this.array.add("Notiz 5");
 
+        this.array2.add("Inhalt von Notiz 1");
+        this.array2.add("Inhalt von Notiz 2");
+        this.array2.add("Inhalt von Notiz 3");
+        this.array2.add("Inhalt von Notiz 4");
+        this.array2.add("Inhalt von Notiz 5");
+
+
         preferences = getSharedPreferences("NoteTitle", 0);
         buttonTitle = preferences.getString("NoteTitles", "Notiz 1");
+
+        preferences = getSharedPreferences("Content", 0);
+        noteText = preferences.getString("Contents", "Inhalt von Notiz 1");
+
 
         this.add = (Button) findViewById(R.id.addButton);
         this.scrollUp = (Button) findViewById(R.id.upButton);
@@ -175,8 +177,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         @Override
         public void onClick(View v) {
             saveNotes();
+            System.out.println(noteButtons.getText());
             Intent intent = new Intent(MainActivity.this, EditNoteActivity.class);
             intent.putExtra("NoteTitles", array.get(0));
+            intent.putExtra("Contents", array2.get(1));
             startActivity(intent);
         }
     };
@@ -230,7 +234,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     void saveNotes()
     {
         SharedPreferences.Editor edit = preferences.edit();
-        edit.putString("notes", array.get(0));
         edit.apply();
     }
 

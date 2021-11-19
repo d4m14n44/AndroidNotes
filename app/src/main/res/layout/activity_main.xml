@@ -48,30 +48,30 @@
         android:layout_width="57dp"
         android:layout_height="54dp"
         android:backgroundTint="@color/yellow"
-        android:textColor="@color/black"
         android:drawableLeft="@drawable/ic_baseline_arrow_upward_24"
         android:text="Down"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.949"
+        app:layout_constraintHorizontal_bias="0.954"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.518" />
+        app:layout_constraintVertical_bias="0.42" />
 
     <Button
         android:id="@+id/downButton"
         android:layout_width="57dp"
         android:layout_height="54dp"
         android:backgroundTint="@color/yellow"
-        android:textColor="@color/black"
         android:drawableLeft="@drawable/ic_baseline_arrow_downward_24"
         android:text="Up"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.949"
+        app:layout_constraintHorizontal_bias="0.954"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.409" />
+        app:layout_constraintVertical_bias="0.521" />
 
     <TextView
         android:id="@+id/test"
